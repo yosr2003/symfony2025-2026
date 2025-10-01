@@ -1,0 +1,16 @@
+<h1>Liste des auteurs</h1>
+
+{% if authors is defined and authors is not empty %}
+    <ul>
+        {% for author in authors %}
+            <li>
+                <img src="{{ asset(author.picture) }}" alt="{{ author.username }}" width="100">
+                <strong>{{ author.username|upper }}</strong> <br>
+                Email : {{ author.email }} <br>
+                Nombre de livres : {{ author.nb_books }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Aucun auteur trouvé.</p>
+{% endif %}
