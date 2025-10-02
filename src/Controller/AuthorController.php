@@ -37,5 +37,26 @@ public function listAuthors(): Response
     ]);
 }
 
+#[Route('/authorDetails/{id}', name: 'AuthorDetails')]
+public function AuthorDetails(int $id): Response
+{
+    $authors = [
+        ['id' => 1, 'picture' => 'assets/images/logo1.png','username' => 'Victor Hugo', 'email' => 'victor.hugo@gmail.com', 'nb_books' => 100],
+        ['id' => 2, 'picture' => 'assets/images/logo2.png','username' => 'William Shakespeare', 'email' => 'william.shakespeare@gmail.com', 'nb_books' => 200],
+        ['id' => 3, 'picture' => 'assets/images/logo3.png','username' => 'Taha Hussein', 'email' => 'taha.hussein@gmail.com', 'nb_books' => 300],
+    ];
+
+    $author = null;
+    foreach ($authors as $a) {
+        if ($a['id'] == $id) {
+            $author = $a;
+            break;
+        }
+    }
+    return $this->render('author_controllerr/showAuthorDetails.html.twig', [
+        'author' => $author,
+    ]);
+}
+
 
 }
