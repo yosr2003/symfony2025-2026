@@ -14,3 +14,44 @@
 {% else %}
     <p>Aucun auteur trouvé.</p>
 {% endif %}
+
+<p>Nombre d'auteurs : {{ authors|length }}</p>
+
+
+Nombres auteurs : 
+{% set i =0 %}
+{% for k in authors %}
+    {% set i=i+1 %}
+ {% endfor %} 
+
+ Nombre d'auteurs : {{ i }}
+
+Nombres total des livres de tout les auteurs : 
+{% set livres =0 %}
+{% for k in authors %}
+
+    {% set livres= k.nb_books + livres %}
+ {% endfor %} 
+
+ {{ livres }}
+
+ <table border="1" cellpadding="8">
+    <tr>
+        <th>Photo</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Nb Livres</th>
+        <th>Actions</th>
+    </tr>
+    {% for author in authors %}
+        <tr>
+            <td><img src="{{ asset(author.picture) }}" alt="{{ author.username }}" width="50"></td>
+            <td>{{ author.username }}</td>
+            <td>{{ author.email }}</td>
+            <td>{{ author.nb_books }}</td>
+            <td>
+                <a href="{{ path('AuthorDetails', { id: author.id }) }}">Détails</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
