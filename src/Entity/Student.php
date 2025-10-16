@@ -21,8 +21,9 @@ class Student
     /**
      * @var Collection<int, club>
      */
-    #[ORM\ManyToMany(targetEntity: club::class, inversedBy: 'students')]
+    #[ORM\ManyToMany(targetEntity: Club::class, inversedBy: 'students', cascade: ['persist', 'remove'])]
     private Collection $clubs;
+
 
     public function __construct()
     {

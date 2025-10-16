@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des livres{% endblock %}
+
+{% block body %}
+<h1>Liste des livres</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ref</th>
+            <th>Title</th>
+            <th>Publication date</th>
+            <th>Category</th>
+            <th>Published</th>
+            <th>Author</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+        <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.ref }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.publicationDate ? book.publicationDate|date('Y-m-d') : '' }}</td>
+            <td>{{ book.category }}</td>
+            <td>{{ book.published ? 'Yes' : 'No' }}</td>
+            <td>
+                {% if book.User %}
+                    {{ book.User.username }}
+                {% else %}
+                    --
+                {% endif %}
+            </td>
+            <td>
+            <a href="{{ path('show_book', {id: book.id}) }}">Détails</a> |
+            <a href="{{ path('edit_book', {id: book.id}) }}">Modifier</a> |
+            <a href="{{ path('delete_book', {id: book.id}) }}" onclick="return confirm('Supprimer ce livre ?');">Supprimer</a>
+        </td>
+
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="8">Aucun livre trouvé.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+
+<p><strong>Nombre de livres publiés :</strong> {{ publishedCount }}</p>
+<p><strong>Nombre de livres non publiés :</strong> {{ unpublishedCount }}</p>
+
+<p><a href="{{ path('add_book') }}">Ajouter un nouveau livre</a></p>
+{% endblock %}

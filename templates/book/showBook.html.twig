@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du livre {{ book.title }}{% endblock %}
+
+{% block body %}
+<h1>Détails du livre</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <td>{{ book.id }}</td>
+    </tr>
+    <tr>
+        <th>Référence</th>
+        <td>{{ book.ref }}</td>
+    </tr>
+    <tr>
+        <th>Titre</th>
+        <td>{{ book.title }}</td>
+    </tr>
+    <tr>
+        <th>Date de publication</th>
+        <td>{{ book.publicationDate ? book.publicationDate|date('Y-m-d') : '—' }}</td>
+    </tr>
+    <tr>
+        <th>Catégorie</th>
+        <td>{{ book.category }}</td>
+    </tr>
+    <tr>
+        <th>Publié</th>
+        <td>{{ book.published ? 'Oui' : 'Non' }}</td>
+    </tr>
+    <tr>
+        <th>Auteur</th>
+        <td>{{ book.User ? book.User.username : '—' }}</td>
+    </tr>
+</table>
+
+<p>
+    <a href="{{ path('edit_book', {id: book.id}) }}">Modifier</a> |
+    <a href="{{ path('delete_book', {id: book.id}) }}" onclick="return confirm('Supprimer ce livre ?');">Supprimer</a> |
+    <a href="{{ path('list_books') }}">Retour à la liste</a>
+</p>
+{% endblock %}

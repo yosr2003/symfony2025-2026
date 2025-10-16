@@ -21,8 +21,9 @@ class Club
     /**
      * @var Collection<int, Student>
      */
-    #[ORM\ManyToMany(targetEntity: Student::class, mappedBy: 'clubs')]
+   #[ORM\ManyToMany(targetEntity: Student::class, mappedBy: 'clubs', cascade: ['persist', 'remove'])]
     private Collection $students;
+
 
     public function __construct()
     {

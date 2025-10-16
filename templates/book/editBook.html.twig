@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le livre{% endblock %}
+
+{% block body %}
+<h1>Modifier le livre</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.ref) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.publicationDate) }}
+    {{ form_row(form.category) }}
+    {{ form_row(form.user) }}
+    <button type="submit">Mettre à jour</button>
+{{ form_end(form) }}
+
+<p><a href="{{ path('list_books') }}">⬅ Retour à la liste des livres</a></p>
+{% endblock %}
