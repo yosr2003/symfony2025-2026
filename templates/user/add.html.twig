@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add User{% endblock %}
+
+{% block body %}
+<h1>Add New User</h1>
+
+{{ form_start(userForm) }}
+    {{ form_row(userForm.username) }}
+    {{ form_row(userForm.email) }}
+    <button type="submit">Add</button>
+{{ form_end(userForm) }}
+
+<a href="{{ path('user_list') }}">Go to list</a>
+{% endblock %}
