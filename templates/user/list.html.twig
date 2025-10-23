@@ -27,4 +27,9 @@
 </table>
 
 <a href="{{ path('user_add') }}">Add new user</a>
+<a href="{{ path('user_delete_zero_books') }}" 
+   onclick="return confirm('Supprimer tous les auteurs sans livres ?')">
+   Supprimer les auteurs sans livres
+</a>
+
 {% endblock %}

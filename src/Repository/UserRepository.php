@@ -41,24 +41,14 @@ class UserRepository extends ServiceEntityRepository
     //        ;
     //    }
     
-    #[Route('/user/add', name: 'user_add')]
-    public function add(Request $request, EntityManagerInterface $em): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
 
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($user);
-            $em->flush();
 
-            return $this->redirectToRoute('user_list');
-        }
 
-        return $this->render('user/add.html.twig', [
-            'userForm' => $form->createView(),
-        ]);
-    }
+
+
+
+
+
 }
 

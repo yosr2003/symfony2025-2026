@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;  
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
@@ -13,6 +13,70 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BookController extends AbstractController
 {
+
+#[Route('/books/update-category', name: 'app_update_books_category')]
+public function updateCategory(BookRepository $bookRepository): Response
+{
+    $count = $bookRepository->updateCategoryFromSciFiToRomance();
+
+    return new Response("{$count} livres modifiés de Science-Fiction vers Romance.");
+}
+
+
+
+    #[Route('/books/old-authors', name: 'books_before_2023')]
+public function booksBefore2023(BookRepository $bookRepository): Response
+{
+    $books = $bookRepository->findBooksBefore2023ByAuthorsWithMoreThan10Books();
+
+    return $this->render('book/books_before_2023.html.twig', [
+        'books' => $books,
+    ]);
+}
+
+ #[Route('/book/list-by-authors', name: 'book_list_by_authors')]
+public function listByAuthors(EntityManagerInterface $em): Response
+{
+    $books = $em->getRepository(Book::class)->booksListByAuthors();
+
+    return $this->render('book/listBook.html.twig', [
+        'books' => $books,
+        'publishedCount' => 0,
+        'unpublishedCount' => 0,
+    ]);
+}
+#[Route('/book/search', name: 'book_search')]
+public function search(Request $request, EntityManagerInterface $em): Response
+{
+    $ref = $request->query->get('ref');
+    $books = [];
+
+    if ($ref) {
+        $books = $em->getRepository(Book::class)->searchBookByRef($ref);
+    } else {
+        $books = $em->getRepository(Book::class)->findAll();
+    }
+
+    // Calcule les compteurs
+    $publishedCount = 0;
+    $unpublishedCount = 0;
+    foreach ($books as $book) {
+        if ($book->isPublished()) {
+            $publishedCount++;
+        } else {
+            $unpublishedCount++;
+        }
+    }
+
+    return $this->render('book/listBook.html.twig', [
+        'books' => $books,
+        'ref' => $ref,
+        'publishedCount' => $publishedCount,
+        'unpublishedCount' => $unpublishedCount,
+    ]);
+}
+
+
 #[Route('/book/add', name: 'add_book')]
 public function addBook(Request $request, EntityManagerInterface $em): Response
 {
@@ -92,5 +156,29 @@ public function show(Book $book): Response
         'book' => $book,
     ]);
 }
+
+
+#[Route('/books/count/romance', name: 'count_romance_books')]
+public function countRomanceBooks(BookRepository $bookRepository)
+{
+    $count = $bookRepository->countBooksByCategory('Romance');
+    return $this->render('book/count.html.twig', [
+        'count' => $count,
+    ]);
+}
+
+#[Route('/books/between', name: 'books_between')]
+public function booksBetweenDates(BookRepository $bookRepository)
+{
+    $start = new \DateTime('2014-01-01');
+    $end = new \DateTime('2018-12-31');
+    $books = $bookRepository->findBooksBetweenDates($start, $end);
+
+    return $this->render('book/list_between.html.twig', [
+        'books' => $books,
+    ]);
+}
+
+
 
 }

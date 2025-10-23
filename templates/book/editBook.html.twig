@@ -9,6 +9,9 @@
     {{ form_row(form.ref) }}
     {{ form_row(form.title) }}
     {{ form_row(form.publicationDate) }}
+    {{ form_row(form.published, {
+        label: 'Publié ?'
+    }) }}
     {{ form_row(form.category) }}
     {{ form_row(form.user) }}
     <button type="submit">Mettre à jour</button>

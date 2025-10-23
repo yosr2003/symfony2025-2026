@@ -1,0 +1,21 @@
+<h2>Liste des livres publiés entre 2014 et 2018</h2>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Title</th>
+        <th>Publication Date</th>
+        <th>Published</th>
+        <th>Category</th>
+        <th>Author</th>
+    </tr>
+    {% for b in books %}
+        <tr>
+            <td>{{ b.title }}</td>
+            <td>{{ b.publicationDate|date('M d, Y') }}</td>
+            <td>{{ b.published ? 'Oui' : 'Non' }}</td>
+            <td>{{ b.category }}</td>
+            <td>{{ b.user.username }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5">Aucun livre trouvé.</td></tr>
+    {% endfor %}
+</table>

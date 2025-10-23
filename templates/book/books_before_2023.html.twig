@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres publiés avant 2023 - Auteurs avec plus de 10 livres{% endblock %}
+
+{% block body %}
+<h2>Livres publiés avant l’année 2023 dont l’auteur a plus de 10 livres</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>PublicationDate</th>
+            <th>Published</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.publicationDate|date('F d, Y') }}</td>
+            <td>{{ book.published ? 1 : 0 }}</td>
+            <td>{{ book.category }}</td>
+            <td>{{ book.User.username }}</td>
+            <td>
+                <a href="{{ path('show_book', { id: book.id }) }}">show</a>
+                <a href="{{ path('edit_book', { id: book.id }) }}">edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6">Aucun résultat trouvé.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

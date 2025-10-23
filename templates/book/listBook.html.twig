@@ -4,7 +4,11 @@
 
 {% block body %}
 <h1>Liste des livres</h1>
-
+<form method="get" action="{{ path('book_search') }}">
+    <label for="ref">Ref</label>
+    <input type="text" name="ref" id="ref" value="{{ ref ?? '' }}">
+    <button type="submit">Search</button>
+</form>
 <table border="1" cellpadding="6" cellspacing="0">
     <thead>
         <tr>
@@ -55,4 +59,9 @@
 <p><strong>Nombre de livres non publiés :</strong> {{ unpublishedCount }}</p>
 
 <p><a href="{{ path('add_book') }}">Ajouter un nouveau livre</a></p>
+<p>
+    <a href="{{ path('book_list_by_authors') }}">Afficher les livres triés par auteur</a>
+</p>
+
+
 {% endblock %}

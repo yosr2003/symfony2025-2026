@@ -16,28 +16,76 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    //    /**
-    //     * @return Book[] Returns an array of Book objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function countBooksByCategory(string $category): int
+{
+    return $this->createQueryBuilder('b')
+        ->select('COUNT(b.id)')
+        ->where('b.category = :cat')
+        ->setParameter('cat', $category)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
 
-    //    public function findOneBySomeField($value): ?Book
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+
+public function findBooksBetweenDates(\DateTime $start, \DateTime $end)
+{
+    return $this->createQueryBuilder('b')
+        ->where('b.publicationDate BETWEEN :start AND :end')
+        ->setParameter('start', $start)
+        ->setParameter('end', $end)
+        ->getQuery()
+        ->getResult();
+}
+public function searchBookByRef(string $ref)
+{
+    return $this->createQueryBuilder('b')
+        ->where('b.ref = :ref')
+        ->setParameter('ref', $ref)
+        ->getQuery()
+        ->getResult();
+}
+public function booksListByAuthors(): array
+{
+    return $this->createQueryBuilder('b')
+        ->join('b.user', 'u')          // jointure avec l’auteur (User)
+        ->addSelect('u')               // pour récupérer aussi l’auteur
+        ->orderBy('u.username', 'ASC') // tri par nom d’auteur (ordre alphabétique)
+        ->addOrderBy('b.title', 'ASC') // (optionnel) tri secondaire par titre
+        ->getQuery()
+        ->getResult();
+}
+
+public function findBooksBefore2023ByAuthorsWithMoreThan10Books(): array
+{
+    $qb = $this->createQueryBuilder('b')
+        ->join('b.user', 'a')
+        ->where('b.published = 1')
+        ->andWhere('b.publicationDate < :limitDate')
+        ->andWhere(
+            '(SELECT COUNT(b2.id)
+              FROM App\Entity\Book b2
+              WHERE b2.user = a.id
+            ) > 10'
+        )
+        ->setParameter('limitDate', new \DateTime('2023-01-01'))
+        ->orderBy('a.username', 'ASC');
+
+    return $qb->getQuery()->getResult();
+}
+
+public function updateCategoryFromSciFiToRomance(): int
+{
+    $qb = $this->createQueryBuilder('b')
+        ->update()
+        ->set('b.category', ':newCategory')
+        ->where('b.category = :oldCategory')
+        ->setParameter('newCategory', 'Romance')
+        ->setParameter('oldCategory', 'Science-Fiction');
+
+    return $qb->getQuery()->execute(); 
+}
+
+
+
+
 }

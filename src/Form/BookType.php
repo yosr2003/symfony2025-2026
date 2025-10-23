@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class BookType extends AbstractType
 {
@@ -27,6 +28,11 @@ class BookType extends AbstractType
                 'widget' => 'choice',
                 'years' => range(1990, date('Y')),
                 'label' => 'Date de publication',
+            ])
+
+            ->add('published', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Publié ?',
             ])
             ->add('category', ChoiceType::class, [
                 'choices' => [

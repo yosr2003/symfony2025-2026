@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des auteurs{% endblock %}
+
+{% block body %}
+    <h1>Search author by number of books</h1>
+
+    <form method="get" action="{{ path('user_search') }}">
+        <label for="min">Min Number</label>
+        <input type="number" name="min" id="min" value="{{ min|default('') }}">
+
+        <label for="max">Max Number</label>
+        <input type="number" name="max" id="max" value="{{ max|default('') }}">
+
+        <button type="submit">Search</button>
+        <a href="{{ path('user_list') }}">Reset</a>
+    </form>
+
+    <br>
+
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Number of books</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.nbBooks }}</td>
+                <td>
+                    <a href="{{ path('user_edit', {id: user.id}) }}">edit</a>
+                    <a href="{{ path('user_delete', {id: user.id}) }}">delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No authors found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
